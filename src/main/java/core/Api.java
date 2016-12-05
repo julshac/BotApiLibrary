@@ -4,7 +4,10 @@ import core.objects.Message;
 
 public interface Api {
     String getToken();
-    void receiveMessage(Message message);
+    ApiHandler getHandler();
+    default void receiveMessage(Message message) {
+        getHandler().onReceiveMessage(message);
+    }
     void sendMessage(Message message);
 }
 

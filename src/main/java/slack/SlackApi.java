@@ -9,11 +9,30 @@ import com.github.seratch.jslack.api.methods.response.channels.ChannelsListRespo
 import com.github.seratch.jslack.api.methods.response.chat.ChatPostMessageResponse;
 import com.github.seratch.jslack.api.model.Channel;
 import core.Api;
+import core.ApiHandler;
 import core.objects.Message;
 import core.objects.MessageType;
 import core.objects.TextMessage;
 
-public abstract class SlackApi implements Api {
+public class SlackApi implements Api {
+
+    private final String token;
+    private final ApiHandler handler;
+
+    public SlackApi(String token, ApiHandler handler) {
+        this.token = token;
+        this.handler = handler;
+    }
+
+    @Override
+    public String getToken() {
+        return token;
+    }
+
+    @Override
+    public ApiHandler getHandler() {
+        return handler;
+    }
 
     private Slack slack = Slack.getInstance();
 

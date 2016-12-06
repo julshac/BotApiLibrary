@@ -2,6 +2,7 @@ package telegram;
 
 
 import core.Api;
+import core.ApiHandler;
 import core.objects.Chat;
 import core.objects.Message;
 import core.objects.MessageType;
@@ -11,7 +12,28 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
-public abstract class TelegramApi extends TelegramLongPollingBot implements Api {
+public class TelegramApi extends TelegramLongPollingBot implements Api {
+
+
+    private final String token;
+    private final ApiHandler handler;
+    private final String name;
+
+    public TelegramApi(String token, ApiHandler handler, String name) {
+        this.token = token;
+        this.handler = handler;
+        this.name = name;
+    }
+
+    @Override
+    public String getToken() {
+        return token;
+    }
+
+    @Override
+    public ApiHandler getHandler() {
+        return handler;
+    }
 
     @Override
     public void sendMessage(Message message) {
@@ -44,5 +66,10 @@ public abstract class TelegramApi extends TelegramLongPollingBot implements Api 
                 receiveMessage(message);
             }
         }
+    }
+
+    @Override
+    public String getBotUsername() {
+        return name;
     }
 }

@@ -6,20 +6,18 @@ import core.objects.Message;
 import core.objects.TextMessage;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/*
-    This code is kind of shit(but it works). Please fix it someone!
- */
-
 public class AuditBot implements ApiHandler {
 
-    private Path logPath = Paths.get("/usr/local/var/postgres/server.log");
+    private Path logPath = Paths.get("C:\\Temp\\Open Server\\OpenServer\\userdata\\logs\\PostgreSQL-9.5_error.log");
     private InputStream input = getFileInputStream(logPath, null);
 
     private List<Chat> chats = new ArrayList<>();
@@ -30,6 +28,12 @@ public class AuditBot implements ApiHandler {
             chats.add(message.getChat());
             return;
         }
+
+        if (message.asTextMessage().filter(m -> Objects.equals(m.text, "/find")).isPresent()) {
+            chats.add(message.getChat());
+            return;
+        }
+
         Path path = message.asTextMessage().map(m -> m.text).filter(m -> m.toLowerCase().startsWith("/setlog"))
                 .map(m -> Paths.get(m.split(" ")[1])).orElse(logPath);
         synchronized (this) {
@@ -51,9 +55,11 @@ public class AuditBot implements ApiHandler {
                 while (input.available() != 0) {
                     sb.append((char)input.read());
                 }
+
                 if (sb.length() != 0) {
                     chats.forEach(chat -> chat.api.sendMessage(new TextMessage(chat, sb.toString())));
                 }
+
                 Thread.sleep(10000); // we should not check log file too often
             } catch (Exception e) {
                 e.printStackTrace();

@@ -14,7 +14,7 @@ public class Main {
 
     public static void main(String[] args) {
         AuditBot bot = new AuditBot();
-        TelegramApi telegramApi = new TelegramApi("206274310:AAF2DmXLzBrNoTFtX2rj1cozJTtMReaBZ2U", bot, "delirium_bot2.0");
+        TelegramApi telegramApi = new TelegramApi("319927751:AAFSavQaz3zhR7SOJWcs9ULCbOEIvbllWQA", bot, "BotApiLibrary");
 
         TelegramBotsApi botsApi = new TelegramBotsApi();
         try {
